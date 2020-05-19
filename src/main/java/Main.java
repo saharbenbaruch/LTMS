@@ -16,8 +16,9 @@ public class Main {
         description.add( "~a | ~ia");
 
         List<String> observation= new ArrayList<String>();
-        observation.add( "ok");
         observation.add( "rf");
+        observation.add( "ok");
+
 
         ProblemSolver solver= new ProblemSolver(description, observation);
         ArrayList<Clause> conflicts =solver.solve();

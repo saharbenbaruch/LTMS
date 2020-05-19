@@ -61,7 +61,7 @@ public class Clause {
     }
 
     /**
-     * update number of UNKNOWN literals and FALSE literals.
+     * update number of UNKNOWN literals and FALSE literals in one clause.
      * @param labels
      */
     public void updateClause(Dictionary<String , Integer> labels) {
@@ -69,12 +69,14 @@ public class Clause {
         numUnknownLiterals=0;
         for (int i=0 ; i<literals.size();i++){
             if (labels.get(literals.get(i).getName())==-1){
+                System.out.println("Current literal: "+literals.get(i).getName());
                 numUnknownLiterals++;
             }
             else{
+                // calculate the label of literal with
                 int label = labels.get(literals.get(i).getName());
                 boolean label_bool= label > 0 ? true : false ;
-                boolean value= label_bool && !literals.get(i).negative;
+                boolean value= label_bool ^ literals.get(i).negative;
                 if (!value)
                     numOfNegative++;
             }
