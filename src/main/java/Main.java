@@ -14,6 +14,8 @@ public class Main {
         description.add("~ok | ~uf");
         description.add("~rf | ~uf");
         description.add( "~a | ~ia");
+//        description.add( "rf");
+//        description.add("ok");
 
         List<String> observation= new ArrayList<String>();
         observation.add( "rf");

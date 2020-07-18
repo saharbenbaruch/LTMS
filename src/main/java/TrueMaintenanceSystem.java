@@ -33,7 +33,7 @@ public class TrueMaintenanceSystem {
     public void init(){
          for (Clause c: clauses){
              // if there is only one literal UNKNOWN and the other are NEGATIVE , add to fringe
-             if (c.getNumUnknownLiterals()==1 && c.getNumOfLiterals()-c.getNumUnknownLiterals()==0){
+             if (c.getNumUnknownLiterals()==1 && c.getNumOfLiterals()-c.getNumUnknownLiterals()==c.getNumOfNegative()){
                  fringe.push(c);
              }
          }
