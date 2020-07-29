@@ -28,8 +28,12 @@ public class ProblemSolver {
         for (String desc :description){
             clauses.add(parse(desc));
         }
+        int i = 0;
         for (String obs :observation){
+            if (i % 500 == 0)
+                System.out.println("Parsing obs number " + i + " out of " + observation.size());
             clauses.add(parse(obs));
+            i += 1;
         }
     }
     /**
@@ -37,22 +41,22 @@ public class ProblemSolver {
      */
     private Clause parse(String desc) {
         //remove spaces.
-        List<Literal> literals=new ArrayList<Literal>();
+        List<CLiteral> CLiterals =new ArrayList<CLiteral>();
         desc=desc.replaceAll("\\s+","");
 
         String [] current=desc.split("[|]");
         for (int i=0; i<current.length;i++){
-            Literal l;
+            CLiteral l;
             if (current[i].contains("~")){
-                l= new Literal(current[i].replace("~",""),true);
+                 l= new CLiteral(current[i].replace("~",""),true);
             }
             else{
-                l= new Literal(current[i].replace("~",""),false);
+                 l= new CLiteral(current[i].replace("~",""),false);
             }
-            literals.add(l);
+            CLiterals.add(l);
         }
 
-        Clause c= new Clause(literals);
+        Clause c= new Clause(CLiterals);
         return c;
     }
 }

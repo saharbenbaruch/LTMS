@@ -17,7 +17,7 @@ public class TrueMaintenanceSystem {
 
         // init 'labels' for example -> a = 1 (true), b=0 (false) , c=-1 (unknown)
         for (Clause c: clauses){
-            for (Literal l : c.getLiterals() ){
+            for (CLiteral l : c.getCLiterals() ){
                 if (labels.get(l.getName())==null)
                     labels.put(l.getName(),-1);
             }
@@ -53,7 +53,7 @@ public class TrueMaintenanceSystem {
     private List<String> propagate(Clause c) {
         List<String> changedLiteral= new ArrayList<String>();
         // -1 = UNKNOWN , 0= NEGATIVE , 1= POSITIVE
-        for (Literal l : c.getLiterals()) {
+        for (CLiteral l : c.getCLiterals()) {
             if (labels.get(l.getName()) == -1) {
                 if (l.negative) {
                     labels.remove(l.getName());
@@ -76,7 +76,7 @@ public class TrueMaintenanceSystem {
     private void updateFringeAndConflicts(List <String> changed) {
         //update fringe
         for (Clause ci: fringe) {
-            for (Literal l : ci.getLiterals()) {
+            for (CLiteral l : ci.getCLiterals()) {
                 if (changed.contains(l.getName())) {
                     ci.updateClause(labels);
                     if (ci.numUnknownLiterals == 0 && ci.numOfNegative == ci.getNumOfLiterals())
@@ -89,7 +89,7 @@ public class TrueMaintenanceSystem {
         // check rest of clauses which not in fringe or conflicts.
         for (Clause c: clauses) {
             if (!fringe.contains(c) && !conflicts.contains(c)) {
-                for (Literal l : c.getLiterals()) {
+                for (CLiteral l : c.getCLiterals()) {
                     if (changed.contains(l.getName())) {
                         c.updateClause(labels);
 
