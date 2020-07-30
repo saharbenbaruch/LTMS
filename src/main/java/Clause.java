@@ -1,6 +1,7 @@
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 public class Clause {
     private List <CLiteral> CLiterals;
@@ -14,6 +15,22 @@ public class Clause {
                 "CLiterals=" + CLiterals +
                 ", numOfNegative=" + numOfNegative +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Clause clause = (Clause) o;
+        return numUnknownLiterals == clause.numUnknownLiterals &&
+                numOfLiterals == clause.numOfLiterals &&
+                numOfNegative == clause.numOfNegative &&
+                Objects.equals(CLiterals, clause.CLiterals);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(CLiterals, numUnknownLiterals, numOfLiterals, numOfNegative);
     }
 
     public Clause(List<CLiteral> CLiterals) {
@@ -91,4 +108,5 @@ public class Clause {
         }
 
     }
+
 }

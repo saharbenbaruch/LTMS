@@ -31,8 +31,8 @@ public class Main {
 
 
         try {
-            BufferedReader brSystem = new BufferedReader(new FileReader("C:\\Users\\Nadav Bar David\\IdeaProjects\\LTMS\\src\\main\\resources\\examples\\Data_Systems\\74283.sys"));
-            BufferedReader brObs = new BufferedReader(new FileReader("C:\\Users\\Nadav Bar David\\IdeaProjects\\LTMS\\src\\main\\resources\\examples\\Data_Systems_Obs\\74283_iscas85.obs"));
+            BufferedReader brSystem = new BufferedReader(new FileReader("C:\\Users\\Nadav Bar David\\IdeaProjects\\LTMS\\src\\main\\resources\\examples\\Data_Systems\\c17.sys"));
+            BufferedReader brObs = new BufferedReader(new FileReader("C:\\Users\\Nadav Bar David\\IdeaProjects\\LTMS\\src\\main\\resources\\examples\\Data_Systems_Obs\\c17_iscas85.obs"));
             BooleanSystemParser bsp = new BooleanSystemParser(brSystem, brObs);
             ArrayList<String> sysDesc = bsp.getSystemDescription();
             ArrayList<String> sysObs = bsp.getSystemObservation();

@@ -3,23 +3,23 @@ import java.util.*;
 public class TrueMaintenanceSystem {
     List<Clause> clauses;
     Stack<Clause> fringe;
-    List <Clause> conflicts;
-    Dictionary<String , Integer> labels;
+    List<Clause> conflicts;
+    Dictionary<String, Integer> labels;
 
     public TrueMaintenanceSystem() {
-        clauses=new ArrayList<Clause>();
-        fringe= new Stack<Clause>();
-        conflicts= new ArrayList<Clause>();
-        labels= new Hashtable<String, Integer>();
+        clauses = new ArrayList<Clause>();
+        fringe = new Stack<Clause>();
+        conflicts = new ArrayList<Clause>();
+        labels = new Hashtable<String, Integer>();
     }
 
     public ArrayList<Clause> solve() {
 
         // init 'labels' for example -> a = 1 (true), b=0 (false) , c=-1 (unknown)
-        for (Clause c: clauses){
-            for (CLiteral l : c.getCLiterals() ){
-                if (labels.get(l.getName())==null)
-                    labels.put(l.getName(),-1);
+        for (Clause c : clauses) {
+            for (CLiteral l : c.getCLiterals()) {
+                if (labels.get(l.getName()) == null)
+                    labels.put(l.getName(), -1);
             }
         }
         init();
@@ -30,28 +30,28 @@ public class TrueMaintenanceSystem {
      * init by creating empty list for conflicts.
      * all clause contain only ONE unknown literal and the rest is FAlSE -> fringe
      */
-    public void init(){
-         for (Clause c: clauses){
-             // if there is only one literal UNKNOWN and the other are NEGATIVE , add to fringe
-             if (c.getNumUnknownLiterals()==1 && c.getNumOfLiterals()-c.getNumUnknownLiterals()==0){
-                 fringe.push(c);
-             }
-         }
+    public void init() {
+        for (Clause c : clauses) {
+            // if there is only one literal UNKNOWN and the other are NEGATIVE , add to fringe
+            if (c.getNumUnknownLiterals() == 1 && c.getNumOfLiterals() - c.getNumUnknownLiterals() == 0) {
+                fringe.push(c);
+            }
+        }
         computeLabel();
     }
 
 
-    public void computeLabel(){
-        while(fringe.size()>0 && conflicts.size()==0 ){
-            Clause c= fringe.pop();
-            List<String> changedLiteral=propagate(c);
+    public void computeLabel() {
+        while (fringe.size() > 0 && conflicts.size() == 0) {
+            Clause c = fringe.pop();
+            List<String> changedLiteral = propagate(c);
             //updateFringeAndConflicts();
             updateFringeAndConflicts(changedLiteral);
         }
     }
 
     private List<String> propagate(Clause c) {
-        List<String> changedLiteral= new ArrayList<String>();
+        List<String> changedLiteral = new ArrayList<String>();
         // -1 = UNKNOWN , 0= NEGATIVE , 1= POSITIVE
         for (CLiteral l : c.getCLiterals()) {
             if (labels.get(l.getName()) == -1) {
@@ -59,8 +59,7 @@ public class TrueMaintenanceSystem {
                     labels.remove(l.getName());
                     labels.put(l.getName(), 0);
                     changedLiteral.add((l.getName()));
-                }
-                else {
+                } else {
                     labels.remove(l.getName());
                     labels.put(l.getName(), 1);
                     changedLiteral.add((l.getName()));
@@ -73,21 +72,24 @@ public class TrueMaintenanceSystem {
     /**
      * update fringe and conflicts after label literal.
      */
-    private void updateFringeAndConflicts(List <String> changed) {
+    private void updateFringeAndConflicts(List<String> changed) {
         //update fringe
-        for (Clause ci: fringe) {
+        for (Clause ci : fringe) {
             for (CLiteral l : ci.getCLiterals()) {
                 if (changed.contains(l.getName())) {
                     ci.updateClause(labels);
                     if (ci.numUnknownLiterals == 0 && ci.numOfNegative == ci.getNumOfLiterals())
                         // else if (c.numUnknownLiterals==0 && c.numOfNegative==c.numUnknownLiterals)
-                        conflicts.add(ci);
+                        if (!conflicts.contains(ci)) {
+                            conflicts.add(ci);
+                            break;
+                        }
                 }
             }
         }
 
         // check rest of clauses which not in fringe or conflicts.
-        for (Clause c: clauses) {
+        for (Clause c : clauses) {
             if (!fringe.contains(c) && !conflicts.contains(c)) {
                 for (CLiteral l : c.getCLiterals()) {
                     if (changed.contains(l.getName())) {
@@ -98,8 +100,10 @@ public class TrueMaintenanceSystem {
                             break;
                         } else if (c.numUnknownLiterals == 0 && c.numOfNegative == c.getNumOfLiterals()) {
                             // else if (c.numUnknownLiterals==0 && c.numOfNegative==c.numUnknownLiterals)
-                            conflicts.add(c);
-                            break;
+                            if (!conflicts.contains(c)) {
+                                conflicts.add(c);
+                                break;
+                            }
                         }
                     }
                 }

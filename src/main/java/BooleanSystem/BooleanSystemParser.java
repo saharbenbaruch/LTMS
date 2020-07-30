@@ -1,10 +1,8 @@
 package BooleanSystem;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BooleanSystemParser {
     BufferedReader systemDescriptionReader;
@@ -85,9 +83,6 @@ public class BooleanSystemParser {
                 line = line.replaceAll(",", "&");
                 java.lang.String[] splitedLine = line.split("\\[");
                 line = splitedLine[1].replaceAll("\\]\\)\\.", "");
-                //java.lang.String CNF = calc.getCNF(line);
-                //System.out.println("The CNF for observation record " + j);
-                //CNF = CNF.replaceAll(" ", "");
                 java.lang.String[] splited = line.split("&");
                 for (int i = 0; i < splited.length; i++) {
                     java.lang.String cleanClause = splited[i].replaceAll("\\(", "").replaceAll("\\)", "");
