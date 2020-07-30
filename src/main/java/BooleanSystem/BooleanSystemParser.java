@@ -3,6 +3,7 @@ package BooleanSystem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BooleanSystemParser {
     BufferedReader systemDescriptionReader;
@@ -74,26 +75,30 @@ public class BooleanSystemParser {
 
     public ArrayList<java.lang.String> getSystemObservation() {
         ArrayList<java.lang.String> observationList = new ArrayList<java.lang.String>();
-        try {
-            java.lang.String line;
-            int j = 0;
-            while ((line = systemObservationReader.readLine()) != null) {
-
-                line = line.replaceAll("-", "~");
-                line = line.replaceAll(",", "&");
+        java.lang.String line;
+        int j = 0;
+        Scanner read =new Scanner(systemObservationReader);
+        read.useDelimiter("\\.");
+        while (read.hasNext()) {
+            line=read.next();
+            line = line.replaceAll("-", "~");
+            line = line.replaceAll(",", "&");
+            if (line.contains("]") || line.contains(")") || line.contains(".")) {
                 java.lang.String[] splitedLine = line.split("\\[");
                 line = splitedLine[1].replaceAll("\\]\\)\\.", "");
                 java.lang.String[] splited = line.split("&");
                 for (int i = 0; i < splited.length; i++) {
-                    java.lang.String cleanClause = splited[i].replaceAll("\\(", "").replaceAll("\\)", "");
+                   // java.lang.String cleanClause = splited[i].replaceAll("\\(", "").replaceAll("\\)", "");
+                    java.lang.String cleanClause = splited[i].replaceAll("[()]",  "").replaceAll("[]]","");
                     observationList.add(cleanClause);
                 }
                 j += 1;
-
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            else
+                break;
+
         }
+        read.close();
         return observationList;
     }
 }

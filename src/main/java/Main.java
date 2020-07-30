@@ -129,7 +129,7 @@ public class Main {
             if (type.equals("description")) {
                 systemDescriptionBR = new BufferedReader(new FileReader(filePath));
             } else if (type.equals("observation")) {
-                systemObservationBR = new BufferedReader(new FileReader(filePath));
+                systemObservationBR = new BufferedReader(new FileReader(filePath),16*1024);
             }
 
         } catch (FileNotFoundException ex) {
