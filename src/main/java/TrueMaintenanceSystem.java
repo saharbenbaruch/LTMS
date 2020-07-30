@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class TrueMaintenanceSystem {
+    public int maxConflicts=1;
     List<Clause> clauses;
     Stack<Clause> fringe;
     List<Clause> conflicts;
@@ -42,7 +43,7 @@ public class TrueMaintenanceSystem {
 
 
     public void computeLabel() {
-        while (fringe.size() > 0 && conflicts.size() == 0) {
+        while (fringe.size() > 0 && conflicts.size() <= maxConflicts) {
             Clause c = fringe.pop();
             List<String> changedLiteral = propagate(c);
             //updateFringeAndConflicts();

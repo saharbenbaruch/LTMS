@@ -39,6 +39,7 @@ public class ProblemSolver {
     public ArrayList<Clause> solve() {
         parseClauses();
         ltms.clauses = clauses;
+        ltms.maxConflicts=this.maxConflictSize;
         return ltms.solve();
     }
 
