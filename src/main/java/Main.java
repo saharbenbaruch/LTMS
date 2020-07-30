@@ -24,7 +24,7 @@ public class Main {
         }
 
         if (option.equals("1")) { // Lecture example
-            List<String> description = new ArrayList<>();
+            List<String> description = new ArrayList<String>();
             description.add(" ~ nci | ~ a | nco");
             description.add("~ia | nco");
             description.add("~ok | a");
@@ -35,7 +35,7 @@ public class Main {
             description.add("~rf | ~uf");
             description.add("~a | ~ia");
 
-            List<String> observation = new ArrayList<>();
+            List<String> observation = new ArrayList<String>();
             observation.add("rf");
             observation.add("ok");
 
