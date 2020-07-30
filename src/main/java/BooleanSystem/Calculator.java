@@ -6,7 +6,7 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Calculator {
-    final static java.lang.String LOGGING = "DEBUG";
+    final static java.lang.String LOGGING = "INFO";
 
     public static void main(java.lang.String[] args) {
 
@@ -104,7 +104,6 @@ public class Calculator {
         System.out.println("\n>>Truth Table Completed");
         if (LOGGING.equals("INFO")) {
             System.out.println("\nCNF : " + CNF(Ldata, FinalAnswer) + "\n");
-            System.out.println("DNF : " + DNF(Ldata, FinalAnswer));
             System.out.println("\n>>Done!");
         }
 
@@ -130,13 +129,7 @@ public class Calculator {
                 literalsTF[i][j] = temp.toCharArray()[j] - 48;
             }
         }
-        // for (int i = 0; i < (int) Math.pow(2, Literals.size()); i++) {
-        //
-        // for (int j = 0; j < Literals.size(); j++) {
-        // System.out.print(literalsTF[i][j] + " ");
-        // }
-        // System.out.println();
-        // }
+
         ArrayList<String> Ldata = new ArrayList<String>();
         for (int i = 0; i < Literals.size(); i++) {
             int[] tempTF = new int[(int) Math.pow(2, Literals.size())];
@@ -235,32 +228,4 @@ public class Calculator {
             return "( " + literalData.get(0).name + " | ~" + literalData.get(0).name + " )" + "  *all true case";
         return result;
     }
-
-    public static java.lang.String DNF(ArrayList<String> literalData, String FinalAnswer) {
-        java.lang.String result = " ";
-        for (int i = 0; i < FinalAnswer.myTF.length; i++) {
-            boolean flag = false;
-            if (FinalAnswer.myTF[i] == 1) {
-                java.lang.String temp = "(";
-                for (String literal : literalData) {
-                    if (flag) {
-                        temp += " &";
-                    } else {
-                        flag = true;
-                    }
-                    if (literal.myTF[i] == 1)
-                        temp = temp + " " + literal.name;
-                    else
-                        temp = temp + " ~" + literal.name;
-                }
-                temp = temp + " )";
-                result = result + " | " + temp;
-            }
-        }
-        result = result.replace("  | (", " (");
-        if (result.equals(" "))
-            return "( " + literalData.get(0).name + " & ~" + literalData.get(0).name + " )" + "  *all false case";
-        return result;
-    }
-
 }

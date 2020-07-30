@@ -94,7 +94,8 @@ public class Clause {
         numUnknownLiterals=0;
         for (int i = 0; i< CLiterals.size(); i++){
             if (labels.get(CLiterals.get(i).getName())==-1){
-                System.out.println("Current literal: "+ CLiterals.get(i).getName());
+                if (ProblemSolver.getConsoleLoggingLevel().equals("INFO"))
+                    System.out.println("Current literal: "+ CLiterals.get(i).getName());
                 numUnknownLiterals++;
             }
             else{
