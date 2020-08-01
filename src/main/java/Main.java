@@ -116,6 +116,7 @@ public class Main {
                 ArrayList<String> sysObs = bsp.getSystemObservation();
                 ProblemSolver solver = new ProblemSolver(sysDesc, sysObs, timeLimitInt, conflictsSizeInt);
                 ArrayList<Clause> conflicts = solver.solve();
+                System.out.println("**************CONFLICTS:************************");
                 for (int i = 0; i < conflicts.size(); i++) {
                     System.out.println(conflicts.get(i).toString());
                 }

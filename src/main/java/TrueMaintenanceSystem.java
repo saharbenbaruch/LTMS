@@ -24,7 +24,8 @@ public class TrueMaintenanceSystem {
             }
         }
         init();
-        return (ArrayList<Clause>) conflicts;
+
+    return (ArrayList<Clause>) conflicts;
     }
 
     /**
@@ -43,7 +44,7 @@ public class TrueMaintenanceSystem {
 
 
     public void computeLabel() {
-        while (fringe.size() > 0 && conflicts.size() <= maxConflicts) {
+        while (fringe.size() > 0 && conflicts.size() < maxConflicts) {
             Clause c = fringe.pop();
             List<String> changedLiteral = propagate(c);
             //updateFringeAndConflicts();
@@ -82,7 +83,9 @@ public class TrueMaintenanceSystem {
                     if (ci.numUnknownLiterals == 0 && ci.numOfNegative == ci.getNumOfLiterals())
                         // else if (c.numUnknownLiterals==0 && c.numOfNegative==c.numUnknownLiterals)
                         if (!conflicts.contains(ci)) {
-                            conflicts.add(ci);
+                            if (conflicts.size()+1<=maxConflicts)
+                                conflicts.add(ci);
+
                             break;
                         }
                 }
@@ -102,8 +105,10 @@ public class TrueMaintenanceSystem {
                         } else if (c.numUnknownLiterals == 0 && c.numOfNegative == c.getNumOfLiterals()) {
                             // else if (c.numUnknownLiterals==0 && c.numOfNegative==c.numUnknownLiterals)
                             if (!conflicts.contains(c)) {
-                                conflicts.add(c);
-                                break;
+                                if (conflicts.size()+1<=maxConflicts)
+                                    conflicts.add(c);
+
+                                    break;
                             }
                         }
                     }
