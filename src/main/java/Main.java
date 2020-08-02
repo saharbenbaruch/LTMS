@@ -41,6 +41,7 @@ public class Main {
 
             ProblemSolver solver = new ProblemSolver(description, observation, -1, 1);
             ArrayList<Clause> conflicts = solver.solve();
+            System.out.println("**************CONFLICTS:************************");
             System.out.println(conflicts);
         }
         else if (option.equals("2")){
@@ -51,6 +52,7 @@ public class Main {
             ArrayList<String> sysObs = bsp.getSystemObservation();
             ProblemSolver solver = new ProblemSolver(sysDesc, sysObs, -1, 1);
             ArrayList<Clause> conflicts = solver.solve();
+            System.out.println("**************CONFLICTS:************************");
             for (int i = 0; i < conflicts.size(); i++) {
                 System.out.println(conflicts.get(i).toString());
             }
@@ -62,11 +64,16 @@ public class Main {
             System.out.println("--- Boolean system ---");
 
             // Time limit
-            System.out.println("Please select a time limit in seconds, if you do not want to limit the time, please enter '-1'");
+            System.out.println("Please select a time limit in seconds, if you do not want to limit the time, please enter '0'");
             // TBD input validation
+
             String timeLimitStr = new Scanner(System.in).nextLine();
+            while (!timeLimitStr.matches("\\d+")) {
+                System.out.println("Please type valid number.");
+                timeLimitStr = new Scanner(System.in).nextLine();
+            }
             int timeLimitInt = Integer.parseInt(timeLimitStr);
-            if (timeLimitInt != -1)
+            if (timeLimitInt == 0)
                 System.out.println("The duration of the run will be limited to " + timeLimitInt + " seconds");
             else
                 System.out.println("The duration of the run will be unlimited");
@@ -77,6 +84,10 @@ public class Main {
             System.out.println("Please select max number of conflicts (LTMS system default is 1)");
             // TBD input validation
             String conflictsSizeStr = new Scanner(System.in).nextLine();
+            while (!conflictsSizeStr.matches("\\d+")) {
+                System.out.println("Please type valid number.");
+                conflictsSizeStr = new Scanner(System.in).nextLine();
+            }
             int conflictsSizeInt = Integer.parseInt(conflictsSizeStr);
             System.out.println("The run will end when " + conflictsSizeInt + " conflicts or less will be found");
             System.out.println("------------------------------------------------");
