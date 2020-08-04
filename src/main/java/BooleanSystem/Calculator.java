@@ -6,7 +6,7 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Calculator {
-    final static java.lang.String LOGGING = "INFO";
+    final static java.lang.String LOGGING = "DEBUG";
 
     public static void main(java.lang.String[] args) {
 
@@ -82,12 +82,14 @@ public class Calculator {
                 String func = stack.pop();
                 if (func.name.equals("~")) {
                     String ans = String.opHandler(b, null, func);
-                    ans.printMe();
+                    if (LOGGING.equals("INFO"))
+                        ans.printMe();
                     stack.push(ans);
                 } else {
                     String a = stack.pop();
                     String ans = String.opHandler(a, b, func);
-                    ans.printMe();
+                    if (LOGGING.equals("INFO"))
+                        ans.printMe();
                     stack.push(ans);
                 }
             } else {
@@ -100,9 +102,8 @@ public class Calculator {
             }
         }
         String FinalAnswer = stack.pop();
-
-        System.out.println("\n>>Truth Table Completed");
         if (LOGGING.equals("INFO")) {
+            System.out.println("\n>>Truth Table Completed");
             System.out.println("\nCNF : " + CNF(Ldata, FinalAnswer) + "\n");
             System.out.println("\n>>Done!");
         }
@@ -175,12 +176,14 @@ public class Calculator {
                 String func = stack.pop();
                 if (func.name.equals("~")) {
                     String ans = String.opHandler(b, null, func);
-                    ans.printMe();
+                    if (LOGGING.equals("INFO"))
+                        ans.printMe();
                     stack.push(ans);
                 } else {
                     String a = stack.pop();
                     String ans = String.opHandler(a, b, func);
-                    ans.printMe();
+                    if (LOGGING.equals("INFO"))
+                        ans.printMe();
                     stack.push(ans);
                 }
             } else {
@@ -193,8 +196,8 @@ public class Calculator {
             }
         }
         String FinalAnswer = stack.pop();
-        System.out.println("\n>>Truth Table Completed");
         if (LOGGING.equals("INFO")) {
+            System.out.println("\n>>Truth Table Completed");
             System.out.println("\nCNF : " + CNF(Ldata, FinalAnswer) + "\n");
             System.out.println("\n>>Done!");
         }

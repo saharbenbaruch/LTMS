@@ -1,11 +1,11 @@
 import BooleanSystem.BooleanSystemParser;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     public static BufferedReader systemDescriptionBR = null;
@@ -17,8 +17,9 @@ public class Main {
         System.out.println("1. Lecture running basic example");
         System.out.println("2. Boolean system running example (for system #74181) with default parameters (1 conflict, no time limit)");
         System.out.println("3. Boolean system custom running");
+        System.out.println("4. Boolean system Testing");
         String option = new Scanner(System.in).nextLine();
-        while (Integer.parseInt(option) != 1 && Integer.parseInt(option) != 2 && Integer.parseInt(option) != 3) {
+        while (Integer.parseInt(option) != 1 && Integer.parseInt(option) != 2 && Integer.parseInt(option) != 3 && Integer.parseInt(option) != 4) {
             System.out.println("Illegal input, please try again");
             option = new Scanner(System.in).nextLine();
         }
@@ -43,8 +44,7 @@ public class Main {
             ArrayList<Clause> conflicts = solver.solve();
             System.out.println("**************CONFLICTS:************************");
             System.out.println(conflicts);
-        }
-        else if (option.equals("2")){
+        } else if (option.equals("2")) {
             setBufferedReader("description", "src/main/resources/examples/Data_Systems/74181.sys");
             setBufferedReader("observation", "src/main/resources/examples/Data_Systems_Obs/74181_iscas85.obs");
             BooleanSystemParser bsp = new BooleanSystemParser(systemDescriptionBR, systemObservationBR);
@@ -58,9 +58,7 @@ public class Main {
             }
 
 
-
-        }
-        else if (option.equals("3")){ // Boolean system running
+        } else if (option.equals("3")) { // Boolean system running
             System.out.println("--- Boolean system ---");
 
             // Time limit
@@ -73,7 +71,7 @@ public class Main {
                 timeLimitStr = new Scanner(System.in).nextLine();
             }
             int timeLimitInt = Integer.parseInt(timeLimitStr);
-            if (timeLimitInt == 0)
+            if (timeLimitInt != 0)
                 System.out.println("The duration of the run will be limited to " + timeLimitInt + " seconds");
             else
                 System.out.println("The duration of the run will be unlimited");
@@ -132,6 +130,115 @@ public class Main {
                     System.out.println(conflicts.get(i).toString());
                 }
             }
+        } else if (option.equals("4")) { // Boolean system running
+            File systemsDir = new File("src/main/resources/examples/Testing/Data_Systems");
+            File obsDir = new File("src/main/resources/examples/Testing/Data_Systems_Obs");
+            File[] systemsListing = systemsDir.listFiles();
+            if (systemsListing != null) {
+                for (File system : systemsListing) {
+                    String nameToSearch = system.getName().substring(0, system.getName().indexOf("System"));
+                    File[] obsListing = obsDir.listFiles();
+                    if (obsListing != null) {
+                        for (File obs : obsListing) {
+                            if (obs.getName().contains(nameToSearch)) {
+                                String obsFileName = obs.getName();
+                                Matcher matcher = Pattern.compile("\\d+").matcher(obsFileName.substring(obsFileName.indexOf("Obs")));
+                                matcher.find();
+                                int realNumOfConflicts = Integer.valueOf(matcher.group());
+
+                                matcher = Pattern.compile("\\d+").matcher(obsFileName.substring(obsFileName.indexOf("Max")));
+                                matcher.find();
+                                int maxNumParameter = Integer.valueOf(matcher.group());
+
+                                System.out.println("Running LTMS for system file name: " + system.getName());
+                                System.out.println("With obs file name: " + obsFileName);
+                                System.out.println("Real num of conflicts: " + realNumOfConflicts);
+                                System.out.println("Parameter of max conflicts: " + maxNumParameter);
+                                if (realNumOfConflicts < maxNumParameter ){
+                                    System.out.println("max num parameter is larger than the num of conflicts");
+                                    System.out.println("Expecting for " + realNumOfConflicts + " conflicts to be returned");
+                                }
+                                else{
+                                    System.out.println("max num parameter is smaller or equal than the num of conflicts");
+                                    System.out.println("Expecting for " + maxNumParameter + " conflicts to be returned");
+                                }
+                                System.out.println("--------------------------------------------------------");
+                                System.out.println("System description:");
+                                BufferedReader br = null;
+                                try {
+                                    br = new BufferedReader(new FileReader(system.getPath()));
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                String line = null;
+                                while (true) {
+                                    try {
+                                        assert br != null;
+                                        if ((line = br.readLine()) == null) break;
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    System.out.println(line);
+                                }
+                                System.out.println("--------------------------------------------------------");
+                                System.out.println("System observation:");
+                                br = null;
+                                try {
+                                    br = new BufferedReader(new FileReader(obs.getPath()));
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                line = null;
+                                while (true) {
+                                    try {
+                                        assert br != null;
+                                        if ((line = br.readLine()) == null) break;
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    System.out.println(line);
+                                }
+                                System.out.println("--------------------------------------------------------");
+                                System.out.println();
+
+//                                System.out.println(system.);
+                                setBufferedReader("description", system.getPath());
+                                setBufferedReader("observation", obs.getPath());
+                                BooleanSystemParser bsp = new BooleanSystemParser(systemDescriptionBR, systemObservationBR);
+                                ArrayList<String> sysDesc = bsp.getSystemDescription();
+                                ArrayList<String> sysObs = bsp.getSystemObservation();
+                                ProblemSolver solver = new ProblemSolver(sysDesc, sysObs, 0, maxNumParameter);
+                                ArrayList<Clause> conflicts = solver.solve();
+                                System.out.println("**************CONFLICTS:************************");
+                                for (int i = 0; i < conflicts.size(); i++) {
+                                    System.out.println(conflicts.get(i).toString());
+                                }
+                            }
+                            System.out.println("--------------------------------------------------------");
+                            System.out.println("--------------------------------------------------------");
+                            System.out.println();
+                        }
+                    }
+                }
+            } else {
+                // Handle the case where dir is not really a directory.
+                // Checking dir.isDirectory() above would not be sufficient
+                // to avoid race conditions with another process that deletes
+                // directories.
+            }
+
+
+            setBufferedReader("description", "src/main/resources/examples/Data_Systems/74181.sys");
+            setBufferedReader("observation", "src/main/resources/examples/Data_Systems_Obs/74181_iscas85.obs");
+            BooleanSystemParser bsp = new BooleanSystemParser(systemDescriptionBR, systemObservationBR);
+            ArrayList<String> sysDesc = bsp.getSystemDescription();
+            ArrayList<String> sysObs = bsp.getSystemObservation();
+            ProblemSolver solver = new ProblemSolver(sysDesc, sysObs, -1, 1);
+            ArrayList<Clause> conflicts = solver.solve();
+            System.out.println("**************CONFLICTS:************************");
+            for (int i = 0; i < conflicts.size(); i++) {
+                System.out.println(conflicts.get(i).toString());
+            }
         }
     }
 
@@ -141,7 +248,7 @@ public class Main {
             if (type.equals("description")) {
                 systemDescriptionBR = new BufferedReader(new FileReader(filePath));
             } else if (type.equals("observation")) {
-                systemObservationBR = new BufferedReader(new FileReader(filePath),16*1024);
+                systemObservationBR = new BufferedReader(new FileReader(filePath), 16 * 1024);
             }
 
         } catch (FileNotFoundException ex) {

@@ -21,7 +21,7 @@ public class ProblemSolver {
     public ProblemSolver(List<String> description, List<String> observation, int timeLimitInt, int conflictsSizeInt) {
         this.description = description;
         this.observation = observation;
-        if (timeLimitInt != -1) // set endTime based on user input
+        if (timeLimitInt != 0) // set endTime based on user input
             this.endTime = System.currentTimeMillis() + timeLimitInt * 1000;
         else // set endTime based on 'MAX_RUNNING_DURATION_IN_MINUTES'
             this.endTime = System.currentTimeMillis() + MAX_RUNNING_DURATION_IN_MINUTES * 60000;

@@ -24,7 +24,7 @@ public class BooleanSystemParser {
             int j = 0;
 
             while ((line = systemDescriptionReader.readLine()) != null) {
-                if (line.contains("gate")) {
+                if (line.toLowerCase().contains("gate")) {
                     line = line.replaceAll("\\[", "").replaceAll("\\]", "");
                     java.lang.String[] gateDetails = line.split(",");
                     java.lang.String type = gateDetails[0].replaceAll("^[\\s\\.\\d]+", "");
@@ -55,7 +55,8 @@ public class BooleanSystemParser {
 
 
                     java.lang.String healthyVariable = gate.getHealthyVariableRepresentation();
-                    System.out.println("Starting to get CNF for record" + j + " : " + healthyVariable);
+                    if (Calculator.LOGGING.equals("INFO"))
+                        System.out.println("Starting to get CNF for record" + j + " : " + healthyVariable);
                     java.lang.String CNF = calc.getCNF(healthyVariable);
                     java.lang.String[] splited = CNF.split("&");
 
