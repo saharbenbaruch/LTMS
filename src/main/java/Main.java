@@ -154,11 +154,10 @@ public class Main {
                                 System.out.println("With obs file name: " + obsFileName);
                                 System.out.println("Real num of conflicts: " + realNumOfConflicts);
                                 System.out.println("Parameter of max conflicts: " + maxNumParameter);
-                                if (realNumOfConflicts < maxNumParameter ){
+                                if (realNumOfConflicts < maxNumParameter) {
                                     System.out.println("max num parameter is larger than the num of conflicts");
                                     System.out.println("Expecting for " + realNumOfConflicts + " conflicts to be returned");
-                                }
-                                else{
+                                } else {
                                     System.out.println("max num parameter is smaller or equal than the num of conflicts");
                                     System.out.println("Expecting for " + maxNumParameter + " conflicts to be returned");
                                 }
@@ -225,19 +224,6 @@ public class Main {
                 // Checking dir.isDirectory() above would not be sufficient
                 // to avoid race conditions with another process that deletes
                 // directories.
-            }
-
-
-            setBufferedReader("description", "src/main/resources/examples/Data_Systems/74181.sys");
-            setBufferedReader("observation", "src/main/resources/examples/Data_Systems_Obs/74181_iscas85.obs");
-            BooleanSystemParser bsp = new BooleanSystemParser(systemDescriptionBR, systemObservationBR);
-            ArrayList<String> sysDesc = bsp.getSystemDescription();
-            ArrayList<String> sysObs = bsp.getSystemObservation();
-            ProblemSolver solver = new ProblemSolver(sysDesc, sysObs, -1, 1);
-            ArrayList<Clause> conflicts = solver.solve();
-            System.out.println("**************CONFLICTS:************************");
-            for (int i = 0; i < conflicts.size(); i++) {
-                System.out.println(conflicts.get(i).toString());
             }
         }
     }
