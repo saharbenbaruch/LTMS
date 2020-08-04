@@ -40,7 +40,7 @@ public class Main {
             observation.add("rf");
             observation.add("ok");
 
-            ProblemSolver solver = new ProblemSolver(description, observation, -1, 1);
+            ProblemSolver solver = new ProblemSolver(description, observation, 0, 1);
             ArrayList<Clause> conflicts = solver.solve();
             System.out.println("**************CONFLICTS:************************");
             System.out.println(conflicts);
@@ -50,7 +50,7 @@ public class Main {
             BooleanSystemParser bsp = new BooleanSystemParser(systemDescriptionBR, systemObservationBR);
             ArrayList<String> sysDesc = bsp.getSystemDescription();
             ArrayList<String> sysObs = bsp.getSystemObservation();
-            ProblemSolver solver = new ProblemSolver(sysDesc, sysObs, -1, 1);
+            ProblemSolver solver = new ProblemSolver(sysDesc, sysObs, 0, 1);
             ArrayList<Clause> conflicts = solver.solve();
             System.out.println("**************CONFLICTS:************************");
             for (int i = 0; i < conflicts.size(); i++) {

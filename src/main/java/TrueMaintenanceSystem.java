@@ -80,7 +80,7 @@ public class TrueMaintenanceSystem {
             for (CLiteral l : ci.getCLiterals()) {
                 if (changed.contains(l.getName())) {
                     ci.updateClause(labels);
-                    if (ci.numUnknownLiterals == 0 && ci.numOfNegative == ci.getNumOfLiterals())
+                    if ( ci.numOfNegative>0)
                         // else if (c.numUnknownLiterals==0 && c.numOfNegative==c.numUnknownLiterals)
                         if (!conflicts.contains(ci)) {
                             if (conflicts.size()+1<=maxConflicts)
@@ -102,7 +102,7 @@ public class TrueMaintenanceSystem {
                         if (c.getNumUnknownLiterals() == 1 && c.getNumOfNegative() == c.getNumOfLiterals() - c.getNumUnknownLiterals()) {
                             fringe.push(c);
                             break;
-                        } else if (c.numUnknownLiterals == 0 && c.numOfNegative == c.getNumOfLiterals()) {
+                        } else if (c.numOfNegative >0) {
                             // else if (c.numUnknownLiterals==0 && c.numOfNegative==c.numUnknownLiterals)
                             if (!conflicts.contains(c)) {
                                 if (conflicts.size()+1<=maxConflicts)
