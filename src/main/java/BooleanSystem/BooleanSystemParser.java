@@ -25,7 +25,7 @@ public class BooleanSystemParser {
 
             while ((line = systemDescriptionReader.readLine()) != null) {
                 if (line.toLowerCase().contains("gate")) {
-                    line = line.replaceAll("\\[", "").replaceAll("\\]", "");
+                    line = line.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\.", "");
                     java.lang.String[] gateDetails = line.split(",");
                     java.lang.String type = gateDetails[0].replaceAll("^[\\s\\.\\d]+", "");
                     java.lang.String id = gateDetails[1];
